@@ -1,4 +1,4 @@
-package com.example.matthew.automaticbookingapp;
+package com.example.matthew.automaticbookingapp.Model;
 
 /**
  * Created by Matthew on 12-Feb-18.
@@ -12,8 +12,19 @@ public class BookingDetails {
     public static String player1;
     public static String player2;
     public static String player3;
+    public static String bookingTime;
+
 
     //CONSTRUCTOR NEEDED HERE
+    private BookingDetails() {
+
+    }
+
+    public static volatile BookingDetails bookingDetails = new BookingDetails();
+
+    public static BookingDetails getInstance() {
+        return bookingDetails;
+    }
 
     public void setOnOrOff(Boolean onOrOff) {
         this.onOrOff = onOrOff;
@@ -62,5 +73,14 @@ public class BookingDetails {
     public String getPlayer3() {
         return player3;
     }
-    
+
+
+    public static String getBookingTime() {
+        return bookingTime;
+    }
+
+    public static void setBookingTime(String courtTime) {
+        BookingDetails.bookingTime = courtTime;
+    }
+
 }

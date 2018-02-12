@@ -1,22 +1,31 @@
-package com.example.matthew.automaticbookingapp;
+package com.example.matthew.automaticbookingapp.Presenter;
 
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.Toast;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import com.example.matthew.automaticbookingapp.Model.BookingDetails;
+import com.example.matthew.automaticbookingapp.Model.MyBroadcastReceiver;
+import com.example.matthew.automaticbookingapp.R;
 
 public class MainActivity extends AppCompatActivity {
+
+    private PendingIntent pendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /* Retrieve a PendingIntent that will perform a broadcast */
+        Intent alarmIntent = new Intent(MainActivity.this, MyBroadcastReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, alarmIntent, 0);
     }
 
     /** Called when the user taps the Send button */
@@ -35,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     /** Called when the user taps the Send button */
     public String getTimeEntered(View view) {
-        EditText editTime = findViewById(R.id.editTime);
+        EditText editTime = findViewById(R.id.courtTime);
         String time = editTime.getText().toString();
         return time;
     }
@@ -62,9 +71,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /** Called when the user taps the Send button */
+    public String getBookingTime(View view) {
+        EditText editTextBookingTime = findViewById(R.id.bookingTime);
+        String bookingTime = editTextBookingTime.getText().toString();
+        return bookingTime;
+    }
+
+    /** Called when the user taps the Send button */
     public void updatePressed(View view) {
 
-        BookingDetails booking1 = new BookingDetails();
+        BookingDetails booking1 = BookingDetails.getInstance();
 
         booking1.setOnOrOff(getOnOrOff(view));
         booking1.setDay(getDayEntered(view));
@@ -72,6 +88,16 @@ public class MainActivity extends AppCompatActivity {
         booking1.setPlayer1(getPlayer1Entered(view));
         booking1.setPlayer2(getPlayer2Entered(view));
         booking1.setPlayer3(getPlayer3Entered(view));
+        booking1.setBookingTime(getBookingTime(view));
+
+
+        Context context = getApplicationContext();
+        CharSequence text = booking1.getPlayer1();
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+
     }
 
 }
